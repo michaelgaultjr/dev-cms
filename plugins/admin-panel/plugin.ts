@@ -1,7 +1,7 @@
-import { IPluginConfig } from "../../src/models.ts";
-import { Router, Application, Context } from "../../src/deps.ts";
+import { PluginConfig } from "../../src/interfaces.ts";
+import { Router, Application, RouterContext, View } from "../../src/deps.ts";
 
-export function configureApplication(app: Application, config: IPluginConfig) {
+export function configureApplication(app: Application, config: PluginConfig) {
     // Example Hello, Goodbye Middleware
     // app.use(async(ctx: Context, next: any) => {
     //     console.log('Hello');
@@ -10,32 +10,12 @@ export function configureApplication(app: Application, config: IPluginConfig) {
     // })
 }
 
-// This way of configuring the router is terrible and will be changed soon, this is just temporary to help test
 export async function configureRouter(router: Router, root: string) {
     router
-        .get('/', (ctx: any) => {
-            ctx.app.view = {
-                viewRoot: `${root}/views`,
-                viewExt: '.njk'
-            }
-
-            ctx.render('dashboard');
-        })
-        .get('/settings', (ctx: any) => {
-            ctx.app.view = {
-                viewRoot: `${root}/views`,
-                viewExt: '.njk'
-            }
-
-            ctx.render('settings');
-        })
-        .get('/pages', (ctx: any) => {
-            ctx.app.view = {
-                viewRoot: `${root}/views`,
-                viewExt: '.njk'
-            }
-
-            ctx.render('pages', {
+        .get('/', async (ctx: RouterContext) => await View(ctx, 'dashboard'))
+        .get('/settings', async (ctx: any) => await View(ctx, 'settings'))
+        .get('/pages', async (ctx: any) => {
+            await View(ctx, 'pages', {
                 pages: [
                     {
                         id: '1938',
@@ -50,12 +30,7 @@ export async function configureRouter(router: Router, root: string) {
                 ]
             })
         })
-        .get('/pages/edit/:id', (ctx: any) => {
-            ctx.app.view = {
-                viewRoot: `${root}/views`,
-                viewExt: '.njk'
-            }
-
+        .get('/pages/edit/:id', async (ctx: any) => {
             const pages: Record<string, any> = {
                 "1938": {
                     id: '1938',
@@ -66,7 +41,7 @@ export async function configureRouter(router: Router, root: string) {
 
             const id = ctx.params.id;
 
-            ctx.render('edit_page', {
+            await View(ctx, 'edit_page', {
                 page: pages[id]
             });
         })
@@ -74,10 +49,11 @@ export async function configureRouter(router: Router, root: string) {
     router
         .post('/pages/edit/:id', async (ctx: any) => {
             const id = ctx.params.id;
-
             const body = await ctx.request.body({ type: 'form-data '});
             const { fields: { title, content } } = await body.value.read();
-            console.log(title, content);
-            ctx.response.redirect("/admin/pages/edit/" + id);
+            console.log(id, title, content);
+            ctx.response.status = 200;
+
+            ctx.response.redirect(ctx.request.url.pathname);
         });
 }

@@ -1,17 +1,19 @@
-import { readJson, exists } from "https://deno.land/std/fs/mod.ts";
-import { IPluginConfig, IPlugin } from "./models.ts";
+import { PluginConfig, Plugin } from "./interfaces.ts";
 import { 
     Application, 
-    Router,
+    ViewRouter,
+
+    exists,
+    readJson,
+
     cyan,
     green,
     red,
 } from "./deps.ts";
+import DenjucksEngine from "./engines/denjucks-engine.ts";
 
 const PLUGIN_CONFIG = 'plugin.json';
 const PLUGIN_ENTRY = 'plugin.ts';
-
-const siteConfig = await readJson(`${Deno.cwd()}/site.json`);
 
 async function loadPlugins(app: Application): Promise<void> {
     const pluginDirectory = `${Deno.cwd()}/plugins`
@@ -24,24 +26,32 @@ async function loadPlugins(app: Application): Promise<void> {
         }
     }
 
-    // Load Plugins
+    // Try to load plugins
     for (const folder of folders) {
         const pluginRoot = `${pluginDirectory}/${folder}`;
 
-        const pluginConfig = await readJson(`${pluginRoot}/${PLUGIN_CONFIG}`) as IPluginConfig;
+        const pluginConfig = await readJson(`${pluginRoot}/${PLUGIN_CONFIG}`) as PluginConfig;
         try {
+            // Confirm Plugin Config has required fields
             if (!pluginConfig.name) throw new Error(`Plugin in folder ${folder} does not have a name!`);
             if (!pluginConfig.version) throw new Error(`Plugin in folder ${folder} does not have a version!`);
 
-            const plugin: IPlugin = await import(`file://${pluginRoot}/${PLUGIN_ENTRY}`);
+            // Import `plugin.ts` as a `Plugin` Interface
+            const plugin: Plugin = await import(`file://${pluginRoot}/${PLUGIN_ENTRY}`);
 
-            const router = new Router({
-                prefix: pluginConfig.base
+            const router = new ViewRouter({
+                prefix: pluginConfig.base,
+                viewEngine: new DenjucksEngine({
+                    root: `${pluginRoot}/views`,
+                    ext: '.njk',
+                }),
             });
 
+            // Check `plugin.ts` has methods and call them
             if (plugin.configureRouter) await plugin.configureRouter(router, pluginRoot);
             if (plugin.configureApplication) await plugin.configureApplication(app, pluginConfig);
 
+            // Register router middleware
             app.use(router.routes());
 	        app.use(router.allowedMethods());
 
@@ -53,6 +63,5 @@ async function loadPlugins(app: Application): Promise<void> {
         }
     }
 }
-
 
 export default loadPlugins;

@@ -8,7 +8,7 @@
 {% block main %}
     <div class="columns is-vcentered">
         <div class="column">
-            <form method="POST" action="/admin/pages/edit/{{ page.id }}" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data">
                 <div class="control">
                     <label>Title</label>
                     <input name="title" class="input" type="text" placeholder="Page Title" value="{{ page.title }}">

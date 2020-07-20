@@ -12,6 +12,5 @@
           "read"
         ]
       }
-    },
-    "tsconfig": "tsconfig.json"
+    }
   }

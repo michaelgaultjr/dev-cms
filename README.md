@@ -16,12 +16,12 @@ plugins
 ```
 
 Example `plugin.json`
-```json
+```
 {
     "name": "Example",
     "version": "1.0.0",
-    "base": "/example" // base route for plugin router. optional
-    "description": "This is an example plugin" // optional
+    "base": "/example", // base route for plugin router. optional
+    "description": "This is an example plugin", // optional
     "options": { // any options you want to pass to your plugin when it's loaded. optional
         "test": true,
         "can_be": "whatever_you_want"

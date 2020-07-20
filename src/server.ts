@@ -1,6 +1,5 @@
 import {
   Application,
-  Router,
   Session,
   
   Database,
@@ -9,7 +8,6 @@ import {
   bold,
 } from './deps.ts';
 import { PageModel, PageContentModel } from './db-models.ts';
-import { viewEngine, engineFactory, adapterFactory } from "https://deno.land/x/view_engine@v1.2.0/mod.ts";
 import { 
   loggerMiddleware, 
   responseTimeMiddleware, 
@@ -21,10 +19,10 @@ import loadPlugins from "./plugin-loader.ts";
 
 const app: Application = new Application();
 
-// View Engine
-const denjuckEngine = engineFactory.getDenjuckEngine();
-const oakAdapter = adapterFactory.getOakAdapter();
-app.use(viewEngine(oakAdapter, denjuckEngine))
+app.state['theme'] = {
+	root: `${Deno.cwd()}/themes/default`,
+	default: 'home'
+}
 
 // Session
 const session = new Session({ framework: 'oak' });

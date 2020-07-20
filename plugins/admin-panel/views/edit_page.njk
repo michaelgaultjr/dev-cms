@@ -1,0 +1,33 @@
+{% extends "_admin.njk" %}
+
+{% block head%}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+{% endblock %}
+
+{% block main %}
+    <div class="columns is-vcentered">
+        <div class="column">
+            <form method="POST" action="/admin/pages/edit/{{ page.id }}" enctype="multipart/form-data">
+                <div class="control">
+                    <label>Title</label>
+                    <input name="title" class="input" type="text" placeholder="Page Title" value="{{ page.title }}">
+                </div>
+                <hr>
+                <textarea name="content" id="MDE" class="textarea" rows="20" placeholder="Markdown / Template Code">{{ page.content }}</textarea>
+                <button class="button is-success" type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        var simplemde = new SimpleMDE({ element: document.getElementById("MDE") });
+    </script>
+
+    <style>
+        .editor-toolbar {
+            opacity: .9!important;
+            background-color: white;
+        }
+    </style>
+{% endblock %}

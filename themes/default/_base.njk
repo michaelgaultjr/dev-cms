@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+        {% for metatag in site.metatags %}
+            <meta name="{{ metatag.name }}" content="{{ metatag.content }}">
+            {% if metatag.og %}
+                <meta name="og:{{ metatag.name }}" content="{{ metatag.content }}">
+            {% endif %}
+        {% endfor %}
+
+        <title>{{ site.title }}</title>
+        <link rel="icon" type="image/png" href="{{ site.icon }}">
+
+        <link rel="stylesheet" href="/static/bulma.min.css">
+        <link rel="stylesheet" href="/static/styles.css">
+    </head>
+    <body>
+        <main>
+            {% block content %}
+            {% endblock content%}
+        </main>
+    </body>
+</html>

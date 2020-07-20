@@ -1,0 +1,21 @@
+{
+    "title": "Site Title",
+    "header": "Site Header",
+    "description": "This is an example site",
+    "icon": "/static/icon.png",
+    "metatags": [
+        {
+            "name": "description",
+            "content": "This is an example description",
+            "og": true
+        },
+        {
+            "name": "keywords",
+            "content": "HTML, CSS, Deno, Portfolio"
+        },
+        {
+            "name": "author",
+            "content": "Michael Gault"
+        }
+    ]
+}

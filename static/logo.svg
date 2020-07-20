@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="252" height="63" viewBox="0 0 252 63">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 30px;
+        text-anchor: middle;
+        fill: #00bd26;
+        font-family: "Cascadia Code";
+      }
+
+      .cls-2 {
+        fill: #3876fe;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <image id="Background" width="252" height="63" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPwAAAA/CAYAAADE16V9AAAA00lEQVR4nO3TAQ0AIAzAsIOa+zcIQtZaWHZ29w2QcGWGDsNDiOEhxPAQYngIMTyEGB5CDA8hhocQw0OI4SHE8BBieAgxPIQYHkIMDyGGhxDDQ4jhIcTwEGJ4CDE8hBgeQgwPIYaHEMNDiOEhxPAQYngIMTyEGB5CDA8hhocQw0OI4SHE8BBieAgxPIQYHkIMDyGGhxDDQ4jhIcTwEGJ4CDE8hBgeQgwPIYaHEMNDiOEhxPAQYngIMTyEGB5CDA8hhocQw0OI4SHE8BBieAgxPFTMzAfjdAH1Jz0RhwAAAABJRU5ErkJggg=="/>
+  <text id="_dev-cms_" data-name="~/dev-cms $" class="cls-1" x="126" y="42"><tspan x="126">~/<tspan class="cls-2">dev-cms <tspan class="cls-3">$</tspan></tspan></tspan></text>
+</svg>

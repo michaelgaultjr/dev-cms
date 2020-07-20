@@ -1,0 +1,139 @@
+:root {
+    --background-color: white;
+    --blur: 3px;
+}
+
+body {
+    line-height: normal;
+}
+
+/* Intro */
+.display-container {
+    width: 100%;
+    height: 85vh;
+
+    position: absolute;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.display-parent {
+    height: 85vh;
+}
+
+.display-bg {
+    filter: blur(var(--blur));
+    transform: scale(1.01);
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+
+    position: inherit;
+    top: 0;
+    z-index: -1; 
+}
+
+.slope-bottom {
+    clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+}
+
+.slope-top {
+    clip-path: polygon(0 10%, 100% 0, 100% 100%, 0% 100%);
+}
+
+.intro-title {
+    color: white;
+    font-size: 3rem;
+}
+
+.center-half {
+    position: relative;
+    max-width: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+}
+
+/* Profile */
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+    .profile img {
+        /* border: solid #1E1E1E 6px; */
+        border-radius: 50%;
+        width: 200px;
+        height: 200px;
+        object-fit: cover; /* or contain */
+        /* padding: 5px; */
+        margin-bottom: 20px;
+    }
+
+    .profile h1 {
+        margin-bottom: .25rem;
+        border-bottom-style: solid;
+        border-color: rgba(0, 0, 0, 0.25);
+        font-weight: 600;
+        font-size: xx-large;
+    }
+
+    .profile label {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+.mb {
+    margin-bottom: 50px;
+}
+
+.large-header {
+    font-size: 3rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.underline {
+    border-bottom-style: solid;
+    border-color: rgba(0, 0, 0, 0.25);
+}
+
+.even-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100vw;
+}
+
+.center-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Animations */
+.fade-in {
+    animation-duration: 750ms; 
+    animation-timing-function: ease-in-out; /* how the animation will behave */
+    animation-name: fadeIn; /* the name of the animation we defined above */
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+/* Open Iconic Style Fix */
+span[class^="fi-"] {
+    vertical-align: middle;
+}

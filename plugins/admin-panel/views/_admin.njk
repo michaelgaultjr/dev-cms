@@ -1,0 +1,53 @@
+{% extends "_base.njk" %}
+
+{% block content %}
+    <div class="dashboard is-full-height">
+        <!-- left panel -->
+        <div class="dashboard-panel" style="background-color: rgba(56 ,118, 254, 0.6); flex-basis: max(15rem, 15vw);">
+            <header class="dashboard-panel-header">
+                <div class="has-text-centered">
+                    <img src="/static/logo.svg" style="background-color: #282828; border-radius: .5rem;">
+                </div>
+            </header>
+
+            <div class="dashboard-panel-content">
+                
+                <aside class="menu">
+                    <p class="menu-label">
+                        General
+                    </p>
+                    <ul class="menu-list">
+                        <li>
+                            <a href="/admin">
+                                <span class="fi-grid-three-up"></span>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/pages">
+                                <span class="fi-book"></span>
+                                <span>Pages</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/settings">
+                                <span class="fi-cog"></span>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                    </ul>
+                </aside>
+
+            </div>
+        </div>
+
+        <!-- main section -->
+        <div class="dashboard-main is-scrollable">
+            <section class="section">
+                {% block main %}
+                {% endblock main%}
+            </section>
+        </div>
+    </div>
+    
+{% endblock content %}

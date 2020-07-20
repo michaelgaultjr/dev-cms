@@ -1,0 +1,39 @@
+{% extends "_admin.njk" %}
+
+{% block main %}
+    <h1>Search</h1>
+    <div class="control">
+        <input class="input" type="text" placeholder="Page Title">
+    </div>
+
+    <hr>
+
+    {% for page in pages %}
+        {{ pageItem(page.title, page.route, page.id) }}
+    {% endfor %}
+{% endblock main %}
+
+{% macro pageItem(title, route, id) %}
+    <div class="card" style="margin-bottom: 1.5rem">
+        <div class="card-content">
+            <p class="title">
+                {{ title }}
+            </p>
+            <p class="subtitle">
+                {{ route }}
+            </p>
+        </div>
+        <footer class="card-footer">
+            <p class="card-footer-item">
+                <span>
+                    <a href="/admin/pages/edit/{{ id }}">Edit</a>
+                </span>
+            </p>
+            <p class="card-footer-item">
+                <span>
+                    <a href="/admin/pages/delete/{{ id }}">Delete</a>
+                </span>
+            </p>
+        </footer>
+    </div>
+{% endmacro %}

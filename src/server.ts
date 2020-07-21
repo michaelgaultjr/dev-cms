@@ -7,7 +7,7 @@ import {
   green,
   bold,
 } from './deps.ts';
-import { PageModel, PageContentModel } from './db-models.ts';
+import { PageDb, Page } from './db-models.ts';
 import { 
   loggerMiddleware, 
   responseTimeMiddleware, 
@@ -21,7 +21,7 @@ const app: Application = new Application();
 
 app.state['theme'] = {
 	root: `${Deno.cwd()}/themes/default`,
-	default: 'home'
+	default: 'home.njk'
 }
 
 // Session
@@ -38,8 +38,7 @@ const db: Database = new Database('postgres', {
 });
 
 db.link([
-    PageModel,
-    PageContentModel
+	PageDb
 ]);
 
 if (Deno.args.includes('--sync')) {
@@ -58,6 +57,14 @@ app.use(staticFileMiddleware);
 app.addEventListener("listen", ({ hostname, port, secure }) => {
   const protocol = secure ? 'https' : 'http'
   console.log(`${green('Listening:')} ${bold(`${protocol}://${hostname || 'localhost'}:${port}`)}`);
+});
+
+// Load pages from db -- Temporary for testing purposes, will be moved
+const pages: Page[] = await PageDb.all();
+
+app.state['pages'] = {};
+pages.forEach(page => {
+	app.state['pages'][page.route] = page;
 });
 
 await app.listen({ port: 8000 });

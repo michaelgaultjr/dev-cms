@@ -1,16 +1,77 @@
 {% extends "_admin.njk" %}
 
 {% block main %}
-    <h1>Search</h1>
-    <div class="control">
-        <input class="input" type="text" placeholder="Page Title">
-    </div>
-
+<label class="label">Search</label>
+        <div class="field is-grouped">
+            
+                <div class="control is-expanded">
+                    <form id="searchForm">
+                        <input name="query" class="input" type="text" placeholder="Search Pages..." value="{{ query }}">
+                    </form>
+                </div>
+                <div class="control">
+                    <button class="button is-primary" form="searchForm" type="submit">Search</button>
+                </div>
+            
+            <div class="control">
+                <button class="button is-success" onclick="toggleModal()">Add Page</button>
+            </div>
+        </div>
     <hr>
 
     {% for page in pages %}
         {{ pageItem(page.title, page.route, page.id) }}
     {% endfor %}
+
+    <div id="addModal" class="modal">
+        <div onclick="closeModal()" class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Add Page</p>
+                    <button onclick="closeModal()" class="delete" aria-label="close"></button>
+                </header>
+                    <section class="modal-card-body">
+                        <form id="addForm" enctype="multipart/form-data" method="POST">
+                            <div class="field">
+                                <label class="label">Title</label>
+                                <div class="control">
+                                    <input name="title" class="input" type="text" placeholder="Ex: Home, About Me" value="{{ page.title }}">
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label class="label">Route</label>
+                                <div class="control">
+                                    <input name="route" class="input" type="text" placeholder="Ex: /home, /about-me" value="{{ page.title }}">
+                                </div>
+                            </div>
+                        </form>
+                    </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success" form="addForm">Save</button>
+                    <button class="button">Cancel</button>
+                </footer>
+    </div>
+
+    <script>
+        const modal = document.getElementById('addModal');
+
+        function closeModal() {
+            modal.classList.remove('is-active');
+        }
+        
+        function openModal() {
+            modal.classList.add('is-active');
+        }
+
+        function toggleModal() {
+            if (modal.classList.contains('is-active')) {
+                closeModal();
+            } else {
+                openModal();
+            }
+        }
+    </script>
 {% endblock main %}
 
 {% macro pageItem(title, route, id) %}

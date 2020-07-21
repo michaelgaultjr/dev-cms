@@ -1,8 +1,11 @@
+![dev-cms Logo](/static/logo.svg)
+
 # dev-cms
 
 dev-cms is a light-weight, extendable CMS written in Deno using [Oak](https://github.com/oakserver/oak) for the HTTP server, [Denjucks](https://github.com/denjucks/denjucks) for templating, and [DenoDB](https://github.com/eveningkid/denodb) for the ORM.
 
 ### Install Instructions
+
 Reminder: Add install instructions
 
 ### Plugins
@@ -29,13 +32,40 @@ Example `plugin.json`
 }
 ```
 
-Check out the `admin-panel` plugin in the plugins folder for a better example.
+Check out the `admin-panel` plugin for an example of what you can do with plugins.
 
 ### Themes
-Themes are not currently implemented, only an idea for the file structure is in place.
+
+Themes are not fully implemented, only an idea for the file structure is in place.
+
+
+### View Engines
+
+View Engines can be created by implementing the `ViewEngine` interface, can use rendering function you want as long as it can take in a string, and return HTML.
+
+Example: Basic Denjucks View Engine
+
+```typescript
+export default class BasicDenjucksEngine implements ViewEngine {
+    config?: ViewConfig;
+
+    constructor(config?: ViewConfig) {
+        this.config = config;
+    }
+
+    async render(template: string, data?: any): Promise<string> {
+        if (this.config && this.config.root) denjucks.configure(this.config.root);
+
+        return denjucks.renderString(template, data);
+    }
+}
+```
 
 ---
 
 ### Please Note
-The main purpose of dev-cms is giving me projects to work on for my portfolio, and to host my portfolio on, so I wouldn't really recommend using this project as anything other than to play around with and learn from, as I won't be supporting it for long, please use something like [Grav](https://getgrav.org/), or [Pagekit](https://pagekit.com/) instead. If you think this is a good starting point for your own project, or want to continue developing it, feel free to fork it and continue working on it, just make sure to credit me.
+
+The main purpose of dev-cms is giving me projects to work on for my portfolio, and to host my portfolio on, so I don't recommend using this project in any production situations as I won't be supporting it for long, please use something like [Grav](https://getgrav.org/), or [Pagekit](https://pagekit.com/) instead. 
+
+If you think this is a good starting point for your own project, or want to continue developing it, feel free to fork it and continue working on it, just make sure to credit me.
 

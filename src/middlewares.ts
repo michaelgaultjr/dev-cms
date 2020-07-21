@@ -9,6 +9,7 @@ import {
     bold
 } from './deps.ts';
 
+import { Page, PageDb } from './db-models.ts';
 import { Marked } from 'https://deno.land/x/markdown/mod.ts';
 import DenjucksEngine from './engines/denjucks-engine.ts';
 
@@ -25,43 +26,46 @@ export const responseTimeMiddleware = async (ctx: Context, next: any) => {
     ctx.response.headers.set("X-Response-Time", `${ms}ms`);
 }
 
-// Temporary for testing purposes
-interface Page {
-    content: string;
-    type: 'markdown' | 'template';
-}
-
-
-const routes: Record<string, Page> = {
-    '/test': {
-        content: '### This is the /test page!\n*italic*',
-        type: 'markdown'
-    },
-    '/words/are/cool': {
-        content: '{{ header }}\n',
-        type: 'template'
-    }
-}
-
 const SITE_CONFIG = await readJson(`${Deno.cwd()}/site.json`);
-const engine = new DenjucksEngine();
 
 export const pageMiddleware = async (ctx: Context, next:any) => {
-    const page: Page = routes[ctx.request.url.pathname]
+    
+    const page = await getPage(ctx);
     if (page) {
-        const content: string = page.type === 'markdown' 
-            ? Marked.parse(page.content)
-            : await engine.render(page.content, { header: "Yes, yes they are!" })
-        
-        const template = ctx.app.state['theme'];
+        const theme = ctx.app.state['theme'];
+        const engine = new DenjucksEngine({
+            root: theme.root
+        });
 
-        ctx.response.status = 200;
+        const content: string = page.type == 'markdown' 
+            ? Marked.parse(page.content ?? '')
+            : await engine.render(page.content ?? '', { header: "Yes, yes they are!" })
+
+        const template = await Deno.readTextFile(`${theme.root}/${theme.default}`);
+
+        ctx.response.body = await engine.render(template, { site: SITE_CONFIG, content });
         ctx.response.headers.set('Content-Type', 'text/html');
-        ctx.response.body = await engine.render(template.default, { site: SITE_CONFIG, content });
+        ctx.response.status = 200;
+
         return;
     }
 
     await next();
+}
+
+async function getPage(ctx: Context): Promise<Page | undefined> {
+    const route = ctx.request.url.pathname;
+
+    let page: Page | undefined;
+    if (ctx.app.state['pages']) page = ctx.app.state['pages'][route];
+    
+    if (!page) {
+        page = await PageDb.where('route', route).first()
+
+        if (page) ctx.app.state['pages'][route] = page;
+    }
+
+    return page;
 }
 
 // Temporary for testing purposes

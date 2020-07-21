@@ -1,46 +1,46 @@
 import { 
     DataTypes, 
-    Model,
-    Relationships 
+    Model
 } from './deps.ts';
 
-export class PageModel extends Model {
+export class PageDb extends Model {
     static table = 'dc_pages';
+    static timestamps = true;
 
     static fields = {
         id: {
             type: DataTypes.UUID,
             primaryKey: true
         },
-        route: DataTypes.STRING,
-        public: DataTypes.BOOLEAN
-    };
-
-    static pageContents() {
-        return this.hasMany(PageContentModel);
-    }
-}
-
-export class PageContentModel extends Model {
-    static table = 'dc_pageContents';
-
-    static fields = {
-        id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true
+        route: {
+            type: DataTypes.STRING,
+            unique: true,
         },
+        title: DataTypes.STRING,
+        style: DataTypes.enum(['default', 'landing']),
+        content: {
+            type: DataTypes.STRING,
+            length: 10240,
+            allowNull: true
+        },
+        type: DataTypes.enum(['markdown', 'template']),
         published: {
             type: DataTypes.DATETIME,
             allowNull: true
-        },
-        pageId: Relationships.belongsTo(PageModel),
-        content: DataTypes.STRING,
-        type: DataTypes.enum(['markdown', 'template']),
+        }  
     };
-
-    static page() {
-        return this.hasOne(PageModel);
-    }
 }
-  
+
+type PageStyle = 'default' | 'landing';
+
+type ContentType = 'markdown' | 'template';
+
+export interface Page {
+    id: string;
+    route: string;
+    title: string;
+    style: PageStyle,
+    content?: string;
+    type: ContentType;
+    published?: Date;
+}

@@ -9,9 +9,34 @@
     <div class="columns is-vcentered">
         <div class="column">
             <form method="POST" enctype="multipart/form-data">
-                <div class="control">
-                    <label>Title</label>
-                    <input name="title" class="input" type="text" placeholder="Page Title" value="{{ page.title }}">
+
+                <div class="field">
+                    <label class="label">Title</label>
+                    <div class="control">
+                        <input name="title" class="input" type="text" placeholder="Page Title" value="{{ page.title }}">
+                    </div>
+                </div>
+
+                <div class="columns">
+                    <div class="field column">
+                        <label class="label">Page Style</label>
+                        <div class="select" style="width: 100%;">
+                            <select name="style" class="input">
+                                <option value="default">Default</option>
+                                <option value="landing">Landing</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field column">
+                        <label class="label">Content Type</label>
+                        <div class="select" style="width: 100%;">
+                            <select name="type" class="input">
+                                <option value="markdown">Markdown</option>
+                                <option value="template">Template</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <hr>
                 <textarea name="content" id="MDE" class="textarea" rows="20" placeholder="Markdown / Template Code">{{ page.content }}</textarea>

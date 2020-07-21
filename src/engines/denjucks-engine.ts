@@ -12,7 +12,7 @@ export default class DenjucksEngine implements ViewEngine {
 
     async render(template: string, data?: any): Promise<string> {
         if (this.config && this.config.root) denjucks.configure(this.config.root);
-
+        //  Implement Template reading and caching
         return denjucks.renderString(template, data);
     }
 }

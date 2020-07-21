@@ -123,6 +123,34 @@ body {
     animation-name: fadeIn; /* the name of the animation we defined above */
 }
 
+.user-content h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.user-content h1 {
+    font-size: 3rem;
+
+    border-bottom-style: solid;
+    border-color: rgba(0, 0, 0, 0.25);
+}
+
+.user-content h2 {
+    font-size: 2.5rem;
+}
+
+.user-content h3 {
+    font-size: 2rem;
+}
+
+.user-content p {
+    font-size: 1.1rem;
+}
+
+.user-content img {
+    display: block;
+}
+
 @keyframes fadeIn {
     0% {
         opacity: 0;

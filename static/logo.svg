@@ -15,8 +15,12 @@
       .cls-3 {
         fill: #fff;
       }
+
+      .cls-bg {
+        fill: #282828
+      }
     </style>
   </defs>
-  <image id="Background" width="252" height="63" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPwAAAA/CAYAAADE16V9AAAA00lEQVR4nO3TAQ0AIAzAsIOa+zcIQtZaWHZ29w2QcGWGDsNDiOEhxPAQYngIMTyEGB5CDA8hhocQw0OI4SHE8BBieAgxPIQYHkIMDyGGhxDDQ4jhIcTwEGJ4CDE8hBgeQgwPIYaHEMNDiOEhxPAQYngIMTyEGB5CDA8hhocQw0OI4SHE8BBieAgxPIQYHkIMDyGGhxDDQ4jhIcTwEGJ4CDE8hBgeQgwPIYaHEMNDiOEhxPAQYngIMTyEGB5CDA8hhocQw0OI4SHE8BBieAgxPFTMzAfjdAH1Jz0RhwAAAABJRU5ErkJggg=="/>
+  <rect width="252" height="63" rx="5" class="cls-bg" />
   <text id="_dev-cms_" data-name="~/dev-cms $" class="cls-1" x="126" y="42"><tspan x="126">~/<tspan class="cls-2">dev-cms <tspan class="cls-3">$</tspan></tspan></tspan></text>
 </svg>

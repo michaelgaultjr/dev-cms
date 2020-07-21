@@ -1,4 +1,4 @@
-import { RouterContext, Router, RouterOptions } from "./deps.ts";
+import { RouterContext, Router, RouterOptions, Context } from "./deps.ts";
 import { ViewConfig, ViewEngine } from './interfaces.ts';
 
 export interface ViewRouterOptions extends RouterOptions {

@@ -11,16 +11,46 @@
             {% endif %}
         {% endfor %}
 
-        <title>{{ site.title }}</title>
+        <title>{{ site.title }} - {{ page.title }}</title>
         <link rel="icon" type="image/png" href="{{ site.icon }}">
 
         <link rel="stylesheet" href="/static/bulma.min.css">
         <link rel="stylesheet" href="/static/styles.css">
+
+        <link href="/themes/default/static/aos.css" rel="stylesheet">
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     </head>
-    <body>
+    <body class="has-navbar-fixed-top">
+        <nav class="navbar is-fixed-top is-transparent" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">
+                    <img src="/static/logo.svg" width="112" height="28">
+                </a>
+
+                <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="/">
+                        Home
+                    </a>
+                    <a class="navbar-item" href="/about">
+                        About
+                    </a>
+                </div>
+            </div>
+        </nav>
         <main>
             {% block content %}
             {% endblock content%}
         </main>
+        <script>
+            AOS.init();
+        </script>
     </body>
 </html>

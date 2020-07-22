@@ -3,7 +3,7 @@ import {
     Model
 } from './deps.ts';
 
-export class PageDb extends Model {
+export class Pages extends Model {
     static table = 'dc_pages';
     static timestamps = true;
 

@@ -1,4 +1,6 @@
 {
+    "theme": "default_theme",
+    
     "title": "Site Title",
     "header": "Site Header",
     "description": "This is an example site",

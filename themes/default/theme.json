@@ -1,4 +1,6 @@
 {
+    "id": "default_theme",
     "name": "Default",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "description": "The Default theme for dev-cms"
 }

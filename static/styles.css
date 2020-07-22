@@ -1,6 +1,5 @@
 :root {
     --background-color: white;
-    --blur: 3px;
 }
 
 body {
@@ -10,7 +9,7 @@ body {
 /* Intro */
 .display-container {
     width: 100%;
-    height: 85vh;
+    height: 100%;
 
     position: absolute;
 
@@ -20,16 +19,17 @@ body {
 }
 
 .display-parent {
-    height: 85vh;
+    --height: 85vh;
+    height: var(--height);
+    position: relative
 }
 
 .display-bg {
-    filter: blur(var(--blur));
-    transform: scale(1.01);
     width: 100%;
     height: 100%;
     background-size: cover;
 
+    background-position: center;
     position: inherit;
     top: 0;
     z-index: -1; 
@@ -123,6 +123,10 @@ body {
     animation-name: fadeIn; /* the name of the animation we defined above */
 }
 
+.user-content {
+    margin-top: 1rem;
+}
+
 .user-content h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     margin-bottom: 20px;
@@ -145,6 +149,10 @@ body {
 
 .user-content p {
     font-size: 1.1rem;
+    max-width: 60vw;
+    margin-bottom: 2rem;
+    text-align: center;
+    line-height: 1.75rem;
 }
 
 .user-content img {

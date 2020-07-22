@@ -20,5 +20,5 @@ export interface ViewConfig {
 
 export interface ViewEngine {
     config?: ViewConfig;
-    render: (template: string, data?: any) => Promise<string>
+    render: (templateName: string, data?: any) => Promise<string>
 }

@@ -7,22 +7,20 @@ import {
   green,
   bold,
 } from './deps.ts';
-import { PageDb, Page } from './db-models.ts';
+import { Pages } from './db-models.ts';
 import { 
   loggerMiddleware, 
   responseTimeMiddleware, 
   staticFileMiddleware,
   pageMiddleware
-} from './middlewares.ts';
+} from './middlewares/mod.ts';
 
-import loadPlugins from "./plugin-loader.ts";
+import loadPlugins from './plugin-loader.ts';
+import loadThemes from './theme-loader.ts';
 
 const app: Application = new Application();
-
-app.state['theme'] = {
-	root: `${Deno.cwd()}/themes/default`,
-	default: 'home.njk'
-}
+// Temporary until proper page cache is created
+app.state['pages'] = {};
 
 // Session
 const session = new Session({ framework: 'oak' });
@@ -38,7 +36,7 @@ const db: Database = new Database('postgres', {
 });
 
 db.link([
-	PageDb
+	Pages
 ]);
 
 if (Deno.args.includes('--sync')) {
@@ -49,22 +47,15 @@ if (Deno.args.includes('--sync')) {
 app.use(loggerMiddleware);
 app.use(responseTimeMiddleware);
 
-await loadPlugins(app);
+await loadPlugins(app); 
+await loadThemes(app);
 
 app.use(pageMiddleware)
 app.use(staticFileMiddleware);
 
-app.addEventListener("listen", ({ hostname, port, secure }) => {
-  const protocol = secure ? 'https' : 'http'
-  console.log(`${green('Listening:')} ${bold(`${protocol}://${hostname || 'localhost'}:${port}`)}`);
-});
-
-// Load pages from db -- Temporary for testing purposes, will be moved
-const pages: Page[] = await PageDb.all();
-
-app.state['pages'] = {};
-pages.forEach(page => {
-	app.state['pages'][page.route] = page;
+app.addEventListener('listen', ({ hostname, port, secure }) => {
+    const protocol = secure ? 'https' : 'http'
+    console.log(`${green('Listening:')} ${bold(`${protocol}://${hostname || 'localhost'}:${port}`)}`);
 });
 
 await app.listen({ port: 8000 });

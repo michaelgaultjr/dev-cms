@@ -10,56 +10,53 @@ import {
     green,
     red,
 } from "./deps.ts";
-import DenjucksEngine from "./engines/denjucks-engine.ts";
+import DenjucksViewEngine from "./engines/denjucks-engine.ts";
 
 const PLUGIN_CONFIG = 'plugin.json';
 const PLUGIN_ENTRY = 'plugin.ts';
 
 async function loadPlugins(app: Application): Promise<void> {
-    const pluginDirectory = `${Deno.cwd()}/plugins`
+    const pluginsRoot = `${Deno.cwd()}/plugins`
 
-    // Get Folders that contain a `plugin.json` file
-    const folders = new Array<string>(); 
-    for await (const dirEntry of Deno.readDir(pluginDirectory)) {
-        if (dirEntry.isDirectory && await exists(`${pluginDirectory}/${dirEntry.name}/${PLUGIN_CONFIG}`)) {
-            folders.push(dirEntry.name);
-        }
-    }
+    if (!await exists(pluginsRoot)) return;
 
-    // Try to load plugins
-    for (const folder of folders) {
-        const pluginRoot = `${pluginDirectory}/${folder}`;
+    // Get folders in `plugins` that contain a `plugin.json` file
+    for await (const pluginDirectory of Deno.readDir(pluginsRoot)) {
+        // Check if the filer is a directory, and if it has a `plugin.json` file
+        if (pluginDirectory.isDirectory && await exists(`${pluginsRoot}/${pluginDirectory.name}/${PLUGIN_CONFIG}`)) {
+            const pluginRoot = `${pluginsRoot}/${pluginDirectory.name}`;
 
-        const pluginConfig = await readJson(`${pluginRoot}/${PLUGIN_CONFIG}`) as PluginConfig;
-        try {
-            // Confirm Plugin Config has required fields
-            if (!pluginConfig.name) throw new Error(`Plugin in folder ${folder} does not have a name!`);
-            if (!pluginConfig.version) throw new Error(`Plugin in folder ${folder} does not have a version!`);
+            const pluginConfig = await readJson(`${pluginRoot}/${PLUGIN_CONFIG}`) as PluginConfig;
+            try {
+                // Confirm Plugin Config has required fields
+                if (!pluginConfig.name) throw new Error(`Plugin in folder ${pluginDirectory.name} does not have a name!`);
+                if (!pluginConfig.version) throw new Error(`Plugin in folder ${pluginDirectory.name} does not have a version!`);
 
-            // Import `plugin.ts` as a `Plugin` Interface
-            const plugin: Plugin = await import(`file://${pluginRoot}/${PLUGIN_ENTRY}`);
+                // Import `plugin.ts` as a `Plugin` interface implemenation
+                const plugin: Plugin = await import(`file://${pluginRoot}/${PLUGIN_ENTRY}`);
 
-            const router = new ViewRouter({
-                prefix: pluginConfig.base,
-                viewEngine: new DenjucksEngine({
-                    root: `${pluginRoot}/views`,
-                    ext: '.njk',
-                }),
-            });
+                const router = new ViewRouter({
+                    prefix: pluginConfig.base,
+                    // Use Denjucks View Engine as Default, can be configured in the configureRouter part
+                    viewEngine: new DenjucksViewEngine({
+                        root: `${pluginRoot}/views`,
+                        ext: '.njk',
+                    }),
+                });
 
-            // Check `plugin.ts` has methods and call them
-            if (plugin.configureRouter) await plugin.configureRouter(router, pluginRoot);
-            if (plugin.configureApplication) await plugin.configureApplication(app, pluginConfig);
+                // Check `plugin.ts` has methods and call them
+                if (plugin.configureRouter) await plugin.configureRouter(router, pluginRoot);
+                if (plugin.configureApplication) await plugin.configureApplication(app, pluginConfig);
 
-            // Register router middleware
-            app.use(router.routes());
-	        app.use(router.allowedMethods());
+                // Register router middleware
+                app.use(router.routes());
+                app.use(router.allowedMethods());
 
-            console.log(`${cyan(`[${pluginConfig.name}]:`)} ${green('Successfully Loaded')}`);
-        }
-        catch (err) {
-            
-            console.error(`${cyan(`[${pluginConfig.name ?? folder}]:`)} ${red('ERROR - LOADING FAILED')}\n-- ERROR LOG --\n${err}`);
+                console.log(`${cyan(`[${pluginConfig.name}]:`)} ${green('Successfully Loaded')}`);
+            }
+            catch (err) {
+                console.error(`${cyan(`[${pluginConfig.name ?? pluginDirectory.name}]:`)} ${red('ERROR - LOADING FAILED')}\n-- ERROR LOG --\n${err}`);
+            }
         }
     }
 }

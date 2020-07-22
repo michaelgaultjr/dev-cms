@@ -22,8 +22,9 @@
                         <label class="label">Page Style</label>
                         <div class="select" style="width: 100%;">
                             <select name="style" class="input">
-                                <option value="default">Default</option>
-                                <option value="landing">Landing</option>
+                                {% for style in styles %}
+                                    {{ option(style, page.style) }}
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -32,8 +33,9 @@
                         <label class="label">Content Type</label>
                         <div class="select" style="width: 100%;">
                             <select name="type" class="input">
-                                <option value="markdown">Markdown</option>
-                                <option value="template">Template</option>
+                                {% for type in types%}
+                                    {{ option(type, page.type) }}
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -54,5 +56,17 @@
             opacity: .9!important;
             background-color: white;
         }
+
+        select {
+            text-transform:capitalize;
+        }
     </style>
 {% endblock %}
+
+{% macro option(value, cond) %}
+    {% if value == cond %}
+        <option selected= value="{{ value }}">{{ value }}</option>
+    {% else %}
+        <option value="{{ value }}">{{ value }}</option>
+    {% endif %}
+{% endmacro %}

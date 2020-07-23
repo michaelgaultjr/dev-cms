@@ -3,8 +3,7 @@ import {
     Application, 
     ViewRouter,
 
-    exists,
-    readJson,
+    fs,
 
     cyan,
     green,
@@ -18,15 +17,15 @@ const PLUGIN_ENTRY = 'plugin.ts';
 async function loadPlugins(app: Application): Promise<void> {
     const pluginsRoot = `${Deno.cwd()}/plugins`
 
-    if (!await exists(pluginsRoot)) return;
+    if (!await fs.exists(pluginsRoot)) return;
 
     // Get folders in `plugins` that contain a `plugin.json` file
     for await (const pluginDirectory of Deno.readDir(pluginsRoot)) {
         // Check if the filer is a directory, and if it has a `plugin.json` file
-        if (pluginDirectory.isDirectory && await exists(`${pluginsRoot}/${pluginDirectory.name}/${PLUGIN_CONFIG}`)) {
+        if (pluginDirectory.isDirectory && await fs.exists(`${pluginsRoot}/${pluginDirectory.name}/${PLUGIN_CONFIG}`)) {
             const pluginRoot = `${pluginsRoot}/${pluginDirectory.name}`;
 
-            const pluginConfig = await readJson(`${pluginRoot}/${PLUGIN_CONFIG}`) as PluginConfig;
+            const pluginConfig = await fs.readJson(`${pluginRoot}/${PLUGIN_CONFIG}`) as PluginConfig;
             try {
                 // Confirm Plugin Config has required fields
                 if (!pluginConfig.name) throw new Error(`Plugin in folder ${pluginDirectory.name} does not have a name!`);

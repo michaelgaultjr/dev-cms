@@ -3,11 +3,13 @@ export {
 
     ViewEngine,
     ViewConfig,
+
+    Page,
+    PageStore
 } from "./interfaces.ts";
 
 export { 
     Pages, 
-    Page 
 } from './db-models.ts';
 
 export { 

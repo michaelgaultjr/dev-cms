@@ -31,7 +31,7 @@ export {
   bold,
 } from "https://deno.land/std@v0.61.0/fmt/colors.ts";
 
-export { 
-    readJson, 
-    exists 
-} from "https://deno.land/std@v0.61.0/fs/mod.ts";
+export * as fs from "https://deno.land/std@v0.61.0/fs/mod.ts";
+
+export * as path from "https://deno.land/std@v0.61.0/path/mod.ts";
+export * as yml from "https://deno.land/std@v0.61.0/encoding/yaml.ts";

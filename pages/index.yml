@@ -1,0 +1,8 @@
+title: Home
+type: markdown
+style: landing
+content: |
+    ### Example
+    this will do for now, I think I'll go with this.
+
+    nice, file based routing is working!

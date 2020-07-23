@@ -31,16 +31,3 @@ export class Pages extends Model {
     };
 }
 
-type PageStyle = 'default' | 'landing';
-
-type ContentType = 'markdown' | 'template';
-
-export interface Page {
-    id: string;
-    route: string;
-    title: string;
-    style: PageStyle,
-    content?: string;
-    type: ContentType;
-    published?: Date;
-}

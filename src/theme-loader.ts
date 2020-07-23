@@ -1,22 +1,22 @@
-import { Application, exists, readJson } from "./deps.ts";
+import { Application, fs } from "./deps.ts";
 import DenjucksViewEngine from './engines/denjucks-engine.ts'
 
 const THEME_CONFIG = 'theme.json';
 // Create site config interface
-const SITE_CONFIG: any = await readJson(`${Deno.cwd()}/site.json`);
+const SITE_CONFIG: any = await fs.readJson(`${Deno.cwd()}/site.json`);
 
 async function loadThemes(app: Application) {
     const themesDirectory = `${Deno.cwd()}/themes`
     app.state['themes'] = {}
 
-    if (!await exists(themesDirectory)) throw new Error('No Themes Directory');
+    if (!await fs.exists(themesDirectory)) throw new Error('No Themes Directory');
 
     // Get directories in `themes` that contain a `theme.json` file
     for await (const themeDirectory of Deno.readDir(themesDirectory)) {
         const THEME_CONFIG_PATH = `${themesDirectory}/${themeDirectory.name}/${THEME_CONFIG}`;
 
-        if (themeDirectory.isDirectory && await exists(THEME_CONFIG_PATH)) {
-            const themeConfig: any = await readJson(`${themesDirectory}/${themeDirectory.name}/${THEME_CONFIG}`);
+        if (themeDirectory.isDirectory && await fs.exists(THEME_CONFIG_PATH)) {
+            const themeConfig: any = await fs.readJson(`${themesDirectory}/${themeDirectory.name}/${THEME_CONFIG}`);
             const THEME_ROOT = `${themesDirectory}/${themeDirectory.name}`;
 
             app.state['themes'][themeConfig.id] = {

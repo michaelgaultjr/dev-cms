@@ -1,15 +1,19 @@
 import {
     Context, 
-    readJson,
+    fs,
 } from '../deps.ts';
 
-import { Page, Pages } from '../db-models.ts';
+import {
+    Page
+} from '../api.ts';
+
 import { Marked } from 'https://deno.land/x/markdown/mod.ts';
 
-const SITE_CONFIG = await readJson(`${Deno.cwd()}/site.json`);
+const SITE_CONFIG = await fs.readJson(`${Deno.cwd()}/site.json`);
 
 export default async (ctx: Context, next: any) => {
-    const page = await getPage(ctx);
+    const page: Page = await ctx.app.state['pageStore'].get(ctx.request.url.pathname);
+
     if (page) {
         const theme = ctx.app.state['theme'];
 
@@ -25,19 +29,4 @@ export default async (ctx: Context, next: any) => {
     }
 
     await next();
-}
-
-async function getPage(ctx: Context): Promise<Page | undefined> {
-    const route = ctx.request.url.pathname;
-
-    let page: Page | undefined;
-    if (ctx.app.state['pages']) page = ctx.app.state['pages'][route];
-    
-    if (!page) {
-        page = await Pages.where('route', route).first()
-
-        if (page) ctx.app.state['pages'][route] = page;
-    }
-
-    return page;
 }

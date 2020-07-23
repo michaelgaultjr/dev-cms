@@ -17,8 +17,13 @@ import {
 
 import loadPlugins from './plugin-loader.ts';
 import loadThemes from './theme-loader.ts';
+import YmlPageStore from './stores/yml-store.ts';
+
 
 const app: Application = new Application();
+// Create Custom Config class for static typing
+app.state['pageStore'] = new YmlPageStore(`${Deno.cwd()}/pages`);
+
 // Temporary until proper page cache is created
 app.state['pages'] = {};
 

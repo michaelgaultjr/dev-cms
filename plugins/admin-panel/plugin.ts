@@ -68,10 +68,10 @@ export async function configureRouter(router: ViewRouter) {
 
             ctx.response.redirect(ctx.request.url.pathname);
         })
-        .post('/pages/edit/:id', async (ctx: RouterContext) => {
-            const id = ctx.params.id;
+        .post('/pages/edit/:route', async (ctx: RouterContext) => {
+            const route = ctx.params.route;
 
-            if (!id) {
+            if (!route) {
                 ctx.response.status = 404;
                 return;
             }
@@ -79,7 +79,11 @@ export async function configureRouter(router: ViewRouter) {
             const body = await ctx.request.body();
             const { fields } = await body.value.read();
 
-            Pages.where('id', id).update(fields);
+            //Pages.where('id', id).update(fields);
+            ctx.app.state['pageStore'].save(route, {
+                // Defaults can be set before importing the fields
+                ...fields,
+            })
 
             ctx.app.state['pages'] = {};
             ctx.response.redirect(ctx.request.url.pathname);

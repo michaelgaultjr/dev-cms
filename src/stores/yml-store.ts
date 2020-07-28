@@ -1,6 +1,7 @@
 import { PageStore, Page } from "../interfaces.ts";
 import { path, yml, fs } from '../deps.ts';
 
+// I don't like this implemenation, but it'll do for now
 export default class YmlPageStore implements PageStore {
     root: string;
     pages: FileCache;
@@ -13,10 +14,8 @@ export default class YmlPageStore implements PageStore {
         });
     }
 
-    // Basic Implemenation, needs caching
     async get(route: string): Promise<Page | undefined> {
         const filePath = await this.pages.getPath(route);
-        console.log(route, filePath)
 
         if (!filePath) return undefined;
 
@@ -58,10 +57,11 @@ class FileCache {
         if (!this.fileCache.map || (this.fileCache.expires && this.fileCache.expires < Date.now())) {
             await this.cache();
         }
-        
         if (!this.fileCache.map) return undefined;
 
-        return this.fileCache.map[route.replace(/\/$/, '')];
+        return this.fileCache.map[route != '/'
+            ? route.replace(/\/$/, '')
+            : route];
     }
 
     async cache() {

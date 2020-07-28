@@ -1,11 +1,11 @@
-import { Application, fs } from "./deps.ts";
-import DenjucksViewEngine from './engines/denjucks-engine.ts'
+import { Application, fs } from "../deps.ts";
+import DenjucksViewEngine from '../engines/denjucks-engine.ts'
 
 const THEME_CONFIG = 'theme.json';
 // Create site config interface
 const SITE_CONFIG: any = await fs.readJson(`${Deno.cwd()}/site.json`);
 
-async function loadThemes(app: Application) {
+export async function loadThemes(app: Application) {
     const themesDirectory = `${Deno.cwd()}/themes`
     app.state['themes'] = {}
 
@@ -43,5 +43,3 @@ function setTheme(app: Application, root: string, themeConfig: any) {
     }
     console.log('Loaded Selected Theme:', themeConfig.name);
 }
-
-export default loadThemes;

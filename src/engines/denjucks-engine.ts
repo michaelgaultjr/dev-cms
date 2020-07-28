@@ -17,6 +17,7 @@ export default class DenjucksViewEngine implements ViewEngine {
         return denjucks.renderString(template, data);
     }
 
+    // Implement Caching
     async getTemplate(template: string, config: ViewConfig): Promise<string> {
         const templatePath = `${config.root ?? Deno.cwd()}/${template}${config.ext ?? ''}`;
 

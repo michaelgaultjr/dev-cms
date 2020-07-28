@@ -85,7 +85,6 @@ export async function configureRouter(router: ViewRouter) {
                 ...fields,
             })
 
-            ctx.app.state['pages'] = {};
             ctx.response.redirect(ctx.request.url.pathname);
         });
 
@@ -99,8 +98,7 @@ export async function configureRouter(router: ViewRouter) {
             }
 
             await Pages.where('id', id).delete();
-            
-            ctx.app.state['pages'] = {};
+
             ctx.response.redirect('/admin/pages');
         });
 }

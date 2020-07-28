@@ -8,6 +8,20 @@ dev-cms is a light-weight, extendable CMS written in Deno using [Oak](https://gi
 
 Reminder: Add install instructions
 
+### Creating Pages
+
+Pages can be created by creating a yaml file in the pages folder or pages sub-folder. The `index.yml` file will be the default for that folder.
+
+Example: index.yml
+```yaml
+title: Home
+type: markdown
+style: landing
+content: |
+    ### Welcome
+    This is my website content
+```
+
 ### Plugins
 
 Plugins can be created by creating a folder in `plugins` with a `plugin.json`, and `plugin.ts` file, example:

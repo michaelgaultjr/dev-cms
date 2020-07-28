@@ -1,4 +1,4 @@
-import { PluginConfig, Plugin } from "./interfaces.ts";
+import { PluginConfig, Plugin } from "../interfaces.ts";
 import { 
     Application, 
     ViewRouter,
@@ -8,13 +8,13 @@ import {
     cyan,
     green,
     red,
-} from "./deps.ts";
-import DenjucksViewEngine from "./engines/denjucks-engine.ts";
+} from "../deps.ts";
+import DenjucksViewEngine from "../engines/denjucks-engine.ts";
 
 const PLUGIN_CONFIG = 'plugin.json';
 const PLUGIN_ENTRY = 'plugin.ts';
 
-async function loadPlugins(app: Application): Promise<void> {
+export async function loadPlugins(app: Application): Promise<void> {
     const pluginsRoot = `${Deno.cwd()}/plugins`
 
     if (!await fs.exists(pluginsRoot)) return;
@@ -59,5 +59,3 @@ async function loadPlugins(app: Application): Promise<void> {
         }
     }
 }
-
-export default loadPlugins;

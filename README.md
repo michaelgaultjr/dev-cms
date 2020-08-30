@@ -1,4 +1,4 @@
-![dev-cms Logo](/static/logo.svg)
+![dev-cms Logo](/logo.svg)
 
 # dev-cms
 
@@ -6,13 +6,15 @@ dev-cms is a light-weight, extendable CMS written in [Deno](https://deno.land/) 
 
 ### Install Instructions
 
-Step 1: [Install Deno](https://deno.land/#installation) version `1.3.2` or higher
+1. [Install Deno](https://deno.land/#installation) version `1.3.2` or higher
 
-Step 2: [Install Denon](https://github.com/denosaurs/denon/)
+2. [Install Denon](https://github.com/denosaurs/denon/)
 
-Step 3: Clone the project using `git clone https://github.com/thegamingninja/dev-cms`
+3. Clone the project using `git clone https://github.com/thegamingninja/dev-cms`
 
-Step 4: CD into `dev-cms` and then run `denon start`
+4. CD into `dev-cms` by running `cd dev-cms` in the terminal of your choice
+
+5. Run the application using `denon start`
 
 ### Configuration
 

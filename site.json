@@ -4,7 +4,7 @@
     "title": "Site Title",
     "header": "Site Header",
     "description": "This is an example site",
-    "icon": "/static/icon.png",
+    "icon": "/icon.png",
     "metatags": [
         {
             "name": "description",

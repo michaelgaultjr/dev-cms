@@ -1,5 +1,5 @@
-import { Application, fs } from "../deps.ts";
-import DenjucksViewEngine from '../engines/denjucks-engine.ts'
+import { Application, fs, green, cyan } from "../deps.ts";
+import DenjucksViewEngine from '../view-engines/denjucks-engine.ts'
 
 const THEME_CONFIG = 'theme.json';
 // Create site config interface
@@ -22,7 +22,7 @@ export async function loadThemes(app: Application) {
             app.state['themes'][themeConfig.id] = {
                 config: themeConfig,
                 root: THEME_ROOT
-            };
+            }
 
             if (SITE_CONFIG.theme === themeConfig.id) {
                 setTheme(app, THEME_ROOT, themeConfig);
@@ -41,5 +41,5 @@ function setTheme(app: Application, root: string, themeConfig: any) {
             ext: '.njk'
         })
     }
-    console.log('Loaded Selected Theme:', themeConfig.name);
+    console.log(`${cyan(`[Theme]`)} ${green(`'${themeConfig.name}' Successfully Loaded`)}`);
 }

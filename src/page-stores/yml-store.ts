@@ -39,7 +39,7 @@ export default class YmlPageStore implements PageStore {
         route = baseRoute;
         for await (const entry of fs.walk(this.root, this.options)) {
             const pathData = path.parse(entry.path);
-            const pagePath = path.join(pathData.dir, pathData.base); // Path to page with extentsion;
+            const pagePath = path.join(pathData.dir, pathData.base); // Path to page with extentsion
             const pageNamePath = pagePath.substr(0, pagePath.length - pathData.ext.length) // Path to page without extentsion
 
             if (route == pageNamePath && !entry.isDirectory) {

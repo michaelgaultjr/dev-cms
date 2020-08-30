@@ -7,7 +7,7 @@ import {
     Page
 } from '../api.ts';
 
-import { Marked } from 'https://deno.land/x/markdown/mod.ts';
+import { Marked } from 'https://deno.land/x/markdown@v2.0.0/mod.ts';
 
 const SITE_CONFIG = await fs.readJson(`${Deno.cwd()}/site.json`);
 
@@ -19,8 +19,8 @@ export default async (ctx: Context, next: any) => {
             const theme = ctx.app.state['theme'];
 
             const content: string = page.type == 'markdown' 
-                ? Marked.parse(page.content ?? '')
-                : await theme.engine.render(page.content ?? '', {})
+                ? Marked.parse(page.content ?? '').content
+                : await theme.engine.render(page.content ?? '', {});
 
             ctx.response.body = await theme.engine.render(page.style, { site: SITE_CONFIG, page, content });
             ctx.response.headers.set('Content-Type', 'text/html');

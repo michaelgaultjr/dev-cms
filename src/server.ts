@@ -59,7 +59,7 @@ app.addEventListener('listen', ({ hostname, port, secure }) => {
 	console.log(`${green('Listening:')} ${bold(`${protocol}://${hostname || 'localhost'}:${port}`)}`);
 });
 
-const PORT = Number(Deno.env.get('PORT') ?? 8000);
-await app.listen({ 
+const PORT = Number(Deno.env.get('PORT') ?? 3000);
+await app.listen({
 	port: PORT
 });

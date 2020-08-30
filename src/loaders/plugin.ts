@@ -9,7 +9,7 @@ import {
     green,
     red,
 } from "../deps.ts";
-import DenjucksViewEngine from "../engines/denjucks-engine.ts";
+import DenjucksViewEngine from "../view-engines/denjucks-engine.ts";
 
 const PLUGIN_CONFIG = 'plugin.json';
 const PLUGIN_ENTRY = 'plugin.ts';
@@ -27,7 +27,7 @@ export async function loadPlugins(app: Application): Promise<void> {
 
             const pluginConfig = await fs.readJson(`${pluginRoot}/${PLUGIN_CONFIG}`) as PluginConfig;
             if ((pluginConfig.enabled ?? true) == false) {
-                console.log(`${cyan(`[${pluginConfig.name}]:`)} ${red('Plugin Disabled. Skipping.')}`);
+                console.log(`${cyan(`[${pluginConfig.name}]`)} ${red('Plugin Disabled. Skipping.')}`);
                 continue;
             }
             
@@ -56,10 +56,10 @@ export async function loadPlugins(app: Application): Promise<void> {
                 app.use(router.routes());
                 app.use(router.allowedMethods());
 
-                console.log(`${cyan(`[${pluginConfig.name}]:`)} ${green('Successfully Loaded')}`);
+                console.log(`${cyan(`[${pluginConfig.name}]`)} ${green('Successfully Loaded')}`);
             }
             catch (err) {
-                console.error(`${cyan(`[${pluginConfig.name ?? pluginDirectory.name}]:`)} ${red('ERROR - LOADING FAILED')}\n-- ERROR LOG --\n${err}`);
+                console.error(`${cyan(`[${pluginConfig.name ?? pluginDirectory.name}]`)} ${red('ERROR - LOADING FAILED')}\n-- ERROR LOG --\n${err}`);
             }
         }
     }

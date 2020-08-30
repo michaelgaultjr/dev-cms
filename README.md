@@ -20,7 +20,9 @@ dev-cms is a light-weight, extendable CMS written in [Deno](https://deno.land/) 
 
 dev-cms can be configured using enviroment variables. You can set them in `denon.json` in the `env` section, or by setting them in the terminal for your OS.
 
-- `PORT={number}` - Sets the port of the Application
+- `PORT={number}` - Sets the port of the Application. Default `3000`.
+- `CACHE-DURATION={number}` Sets the `max-age` property in the `Cache-Control` header for static files. Default `1800`.
+- `ALLOWED-EXTENTSIONS={extentions}` Comma separated list of allowed extentions. Default `.css,.js,.png,.svg`.
 
 ### Creating Pages
 

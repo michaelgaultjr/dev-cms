@@ -15,7 +15,6 @@ export default async (ctx: Context, next: any) => {
     const page: Page = await ctx.app.state['pageStore'].get(ctx.request.url.pathname);
     try {
         if (page) {
-            
             const theme = ctx.app.state['theme'];
 
             const content: string = page.type == 'markdown' 

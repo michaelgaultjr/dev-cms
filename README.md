@@ -10,9 +10,9 @@ Reminder: Add install instructions
 
 ### Creating Pages
 
-Pages can be created by creating a yaml file in the pages folder or pages sub-folder. The `index.yml` file will be the default for that folder.
+Pages can be created by creating a yaml file in the pages folder or pages sub-folder. The `index` yaml file will be the default for that folder.
 
-Example: index.yml
+Example: `index.yml`
 ```yaml
 title: Home
 type: markdown
@@ -39,6 +39,7 @@ Example `plugin.json`
     "version": "1.0.0",
     "base": "/example", // base route for plugin router. optional
     "description": "This is an example plugin", // optional
+    "enabled": true // optional, true or false, defaults to true if not specified
     "options": { // any options you want to pass to your plugin when it's loaded. optional
         "test": true,
         "can_be": "whatever_you_want"

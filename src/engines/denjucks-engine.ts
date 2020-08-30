@@ -1,5 +1,5 @@
-// @deno-types="https://deno.land/x/denjucks/mod.d.ts"
-import denjucks from "https://deno.land/x/denjucks/mod.js"
+// @deno-types="../../../denjucks/mod.d.ts"
+import denjucks from "../../../denjucks/mod.js"
 
 import { ViewEngine, ViewConfig } from '../interfaces.ts';
 

@@ -1,85 +1,60 @@
-import { PageStore, Page } from "../interfaces.ts";
+import { PageStore, Page, Cache } from "../interfaces.ts";
 import { path, yml, fs } from '../deps.ts';
+import RecordCache from '../record-cache.ts';
 
-// I don't like this implemenation, but it'll do for now
+async function readPage(path: string): Promise<Page | undefined> {
+    try {
+        const content = await Deno.readTextFile(path);
+        return yml.parse(content) as Page;
+    } 
+    catch (e) {
+        console.error(e);
+        return undefined;
+    }
+}
+
+const DEFAULT_OPTIONS = {
+    exts: [ '.yml', '.yaml', '' ],
+    includeDirs: true
+}
+
 export default class YmlPageStore implements PageStore {
     root: string;
-    pages: FileCache;
+    options: fs.WalkOptions;
+    cache: Cache<string, string>;
 
-    constructor(root: string) {
+    constructor(root: string, options?: fs.WalkOptions) {
         this.root = root;
-        this.pages = new FileCache(root, {
-            exts: [ '.yml', '.yaml', '' ],
-            includeDirs: true,
-        });
+        this.options = options ?? DEFAULT_OPTIONS;
+        this.cache = new RecordCache<string, string>()
     }
 
     async get(route: string): Promise<Page | undefined> {
-        const filePath = await this.pages.getPath(route);
+        const baseRoute = path.format(path.parse(path.join(this.root, route)))
 
-        if (!filePath) return undefined;
-
-        const ymlContent = await Deno.readTextFile(filePath);
-        const page = yml.parse(ymlContent) as Page;
+        if (await this.cache.exists(baseRoute)) {
+            return await readPage(await this.cache.get(baseRoute));
+        }
         
-        return page;
+        route = baseRoute;
+        for await (const entry of fs.walk(this.root, this.options)) {
+            const pathData = path.parse(entry.path);
+            const pagePath = path.join(pathData.dir, pathData.base); // Path to page with extentsion;
+            const pageNamePath = pagePath.substr(0, pagePath.length - pathData.ext.length) // Path to page without extentsion
+
+            if (route == pageNamePath && !entry.isDirectory) {
+                this.cache.set(baseRoute, pagePath);
+                return await readPage(pagePath);
+            }
+            else if (pageNamePath == route && entry.isDirectory) {
+                route = path.join(route, 'index'); // Append 'index' to route if we know we're in a folder
+            }
+        }
+
+        return undefined;
     }
 
     async save(route: string, page: Page): Promise<void> {
-        if (route == '/') route = '/index';
-
-        const ymlContent = yml.stringify(page);
-        Deno.writeTextFile(path.join(this.root, route),ymlContent);
-
         throw new Error('Not Implemented');
-    }
-}
-
-interface CacheMap<TKey extends string | number | symbol, TValue> {
-    expires?: number;
-    map?: Record<TKey, TValue>;
-}
-
-class FileCache {
-    root: string;
-    options: fs.WalkOptions;
-
-    fileCache: CacheMap<string, string>;
-
-    constructor(root: string, options: fs.WalkOptions) {
-        this.root = root;
-        this.options = options;
-
-        this.fileCache = {};
-    }
-
-    async getPath(route: string): Promise<string | undefined> {
-        if (!this.fileCache.map || (this.fileCache.expires && this.fileCache.expires < Date.now())) {
-            await this.cache();
-        }
-        if (!this.fileCache.map) return undefined;
-
-        return this.fileCache.map[route != '/'
-            ? route.replace(/\/$/, '')
-            : route];
-    }
-
-    async cache() {
-        const fileMap: Record<string, string> = {}
-
-        for await (const entry of fs.walk(this.root, this.options)) {
-            const entPath = path.parse(entry.path.substring(this.root.length));
-
-            const route = path.join(entPath.dir, entPath.name).replaceAll('\\', '/');
-
-            fileMap[route == '.' ? '/' : route] = entPath.ext == '' 
-                ? path.join(entry.path, 'index.yml')
-                : entry.path;
-
-            this.fileCache = {
-                expires: Date.now() + (5 * 60000), // Expires in 5 minutes
-                map: fileMap
-            };
-        }
     }
 }

@@ -1,18 +1,15 @@
 import {
-  Application,
-  Session,
-  
-  Database,
+	Application,
 
-  green,
-  bold,
+	green,
+	bold,
 } from './deps.ts';
-import { Pages } from './db-models.ts';
+
 import { 
-  loggerMiddleware, 
-  responseTimeMiddleware, 
-  staticFileMiddleware,
-  pageMiddleware
+	loggerMiddleware, 
+	responseTimeMiddleware, 
+	staticFileMiddleware,
+	pageMiddleware
 } from './middlewares/mod.ts';
 
 import {
@@ -54,12 +51,15 @@ await loadPlugins(app);
 await loadThemes(app);
 await loadPages(app);
 
-app.use(pageMiddleware)
 app.use(staticFileMiddleware);
+app.use(pageMiddleware)
 
 app.addEventListener('listen', ({ hostname, port, secure }) => {
-    const protocol = secure ? 'https' : 'http'
-    console.log(`${green('Listening:')} ${bold(`${protocol}://${hostname || 'localhost'}:${port}`)}`);
+	const protocol = secure ? 'https' : 'http'
+	console.log(`${green('Listening:')} ${bold(`${protocol}://${hostname || 'localhost'}:${port}`)}`);
 });
 
-await app.listen({ port: 8000 });
+const PORT = Number(Deno.env.get('PORT') ?? 8000);
+await app.listen({ 
+	port: PORT
+});

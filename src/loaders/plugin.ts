@@ -26,6 +26,11 @@ export async function loadPlugins(app: Application): Promise<void> {
             const pluginRoot = `${pluginsRoot}/${pluginDirectory.name}`;
 
             const pluginConfig = await fs.readJson(`${pluginRoot}/${PLUGIN_CONFIG}`) as PluginConfig;
+            if ((pluginConfig.enabled ?? true) == false) {
+                console.log(`${cyan(`[${pluginConfig.name}]:`)} ${red('Plugin Disabled. Skipping.')}`);
+                continue;
+            }
+            
             try {
                 // Confirm Plugin Config has required fields
                 if (!pluginConfig.name) throw new Error(`Plugin in folder ${pluginDirectory.name} does not have a name!`);

@@ -7,6 +7,7 @@ export interface PluginConfig {
     description?: string;
     base?: string;
     options?: any;
+    enabled?: boolean;
 }
 
 export interface Plugin {
@@ -44,3 +45,11 @@ export interface PageStore {
     save: (route: string, page: Page) => Promise<void>;
 }
 //#endregion
+
+export interface Cache<TKey extends string | number | symbol, TValue> {
+    exists: (key: TKey) => Promise<boolean>,
+    get: (key: TKey) => Promise<TValue>,
+    set: (key: TKey, value: TValue) => Promise<void>,
+    remove: (key: TKey) => Promise<void>,
+    clear: () => Promise<void>
+}

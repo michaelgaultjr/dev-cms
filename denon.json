@@ -9,8 +9,12 @@
         "unstable": true,
         "allow": [
           "net", 
-          "read"
-        ]
+          "read",
+          "env"
+        ],
+        "env" :{
+          "PORT": "3000"
+        }
       }
     }
   }

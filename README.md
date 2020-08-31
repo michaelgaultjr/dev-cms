@@ -96,17 +96,13 @@ export default class BasicDenjucksEngine implements ViewEngine {
 }
 ```
 
-# Roadmap
+## Upcoming Features
 
-## Small Improvements
----
-Remove `/static` from root
-
-## Major Improvements
-
-Media Library: Create a plugin that's page independant for user uploaded content
-
-Theme Layouts: Load any file in the theme folder named `[name].layout.[extention]` as a possible layout
+- Navbar Config
+- (Improved) Site Settings
+- More Tests
+- Media Library (A plugin that's page independant for user uploaded content)
+- Theme Layouts (Load any file in the theme folder named `[name].layout.[extention]` as a possible layout)
 
 ---
 

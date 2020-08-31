@@ -6,11 +6,7 @@
         "cmd": "deno run src/server.ts",
         "desc": "Run dev-cms in production mode",
         "unstable": true,
-        "allow": [
-          "net",
-          "read",
-          "env"
-        ],
+        "allow": [ "net", "read", "env" ],
         "env" :{
           "CACHE-DURATION": "1800",
           "PORT": "3000"
@@ -21,15 +17,17 @@
         "desc": "Run dev-cms in development mode",
         "watch": true,
         "unstable": true,
-        "allow": [
-          "net",
-          "read",
-          "env"
-        ],
+        "allow": [ "net", "read", "env" ],
         "env" :{
           "CACHE-DURATION": "30",
           "PORT": "3000"
         }
+      },
+      "tests": {
+        "cmd": "deno test",
+        "desc": "Run dev-cms tests",
+        "unstable": true,
+        "allow": [ "all" ]
       }
     }
   }

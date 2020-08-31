@@ -40,6 +40,12 @@ export interface Page {
     published?: Date;
 }
 
+export interface NavItem {
+    name: string;
+    link?: string;
+    items?: NavItem[]
+}
+
 export interface PageStore {
     get: (route: string) => Promise<Page | undefined>;
     save: (route: string, page: Page) => Promise<void>;

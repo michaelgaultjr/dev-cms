@@ -5,6 +5,29 @@
     "header": "Site Header",
     "description": "This is an example site",
     "icon": "/icon.png",
+    "navitems": [
+        { 
+            "name": "Home", 
+            "link": "/" 
+        },
+        { 
+            "name": "About", 
+            "link": "/about" 
+        },
+        {
+            "name": "Dropdown", 
+            "items": [
+                { 
+                    "name": "Item 1", 
+                    "link": "/item/1" 
+                },
+                { 
+                    "name": "Item 2", 
+                    "link": "/item/2" 
+                }
+            ] 
+    }
+    ],
     "metatags": [
         {
             "name": "description",

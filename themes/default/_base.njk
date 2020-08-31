@@ -34,14 +34,29 @@
                 </a>
             </div>
 
-            <div id="navbarBasicExample" class="navbar-menu">
+            <!-- Redo this, possibly with a recursive function -->
+            <div class="navbar-menu">
                 <div class="navbar-start">
-                    <a class="navbar-item" href="/">
-                        Home
-                    </a>
-                    <a class="navbar-item" href="/about">
-                        About
-                    </a>
+                    {% for navitem in site.navitems %}
+                        {% if navitem.link %}
+                            <a class="navbar-item" href="{{ navitem.link }}">
+                                {{ navitem.name }}
+                            </a>
+                        {% elif navitem.items %}
+                            <div class="navbar-item has-dropdown is-hoverable">
+                                <a class="navbar-link">
+                                    {{ navitem.name }}
+                                </a>
+                                <div class="navbar-dropdown">
+                                    {% for item in navitem.items %}
+                                        <a class="navbar-item" href="{{ item.link }}">
+                                            {{ item.name }}
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </nav>

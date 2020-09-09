@@ -6,6 +6,10 @@ body {
     line-height: normal;
 }
 
+hr {
+    width: 95%;
+}
+
 /* Intro */
 .display-container {
     width: 100%;

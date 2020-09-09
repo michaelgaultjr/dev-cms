@@ -2,7 +2,7 @@
 
 # dev-cms
 
-dev-cms is a light-weight, extendable CMS written in [Deno](https://deno.land/) using [Oak](https://github.com/oakserver/oak) for the HTTP server, [Denjucks](https://github.com/denjucks/denjucks) for templating.
+dev-cms is a light-weight, modular Content Management System written in [TypeScript](https://www.typescriptlang.org/) & [Deno](https://deno.land/) using [Oak](https://github.com/oakserver/oak) for the HTTP server, and [Denjucks](https://github.com/denjucks/denjucks) for templating.
 
 ### Install Instructions
 

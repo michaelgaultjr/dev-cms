@@ -10,12 +10,14 @@ const DEFAULT_OPTIONS = {
 export default class YmlPageStore implements PageStore {
     root: string;
     options: fs.WalkOptions;
-    cache: Cache<string, string>;
+    routeCache: Cache<string, string>;
+    pageCache: Cache<string, Page | undefined>;
 
     constructor(root: string, options?: fs.WalkOptions) {
         this.root = root;
         this.options = options ?? DEFAULT_OPTIONS;
-        this.cache = new RecordCache<string, string>()
+        this.routeCache = new RecordCache<string, string>();
+        this.pageCache = new RecordCache<string, Page | undefined>(150000);
     }
 
     async findRoute(route: string): Promise<string | undefined> {
@@ -29,17 +31,23 @@ export default class YmlPageStore implements PageStore {
             }
             else if (pageNamePath == route && entry.isDirectory) {
                 route = path.join(route, 'index'); // Append 'index' to route if we know we're in a folder
-
             }
         }
 
         return undefined;
     }
 
-    async readPage(path: string): Promise<Page | undefined> {
+    async getPage(path: string): Promise<Page | undefined> {
+
+        if (await this.pageCache.exists(path)) {
+            return this.pageCache.get(path);
+        }
+
         try {
             const content = await Deno.readTextFile(path);
-            return yml.parse(content) as Page;
+            const page = yml.parse(content) as Page;
+            this.pageCache.set(path, page);
+            return page;
         } 
         catch (e) {
             console.error(e);
@@ -50,17 +58,15 @@ export default class YmlPageStore implements PageStore {
     async get(route: string): Promise<Page | undefined> {
         const baseRoute = path.format(path.parse(path.join(this.root, route)))
 
-        if (await this.cache.exists(baseRoute)) {
-            return await this.readPage(await this.cache.get(baseRoute));
+        if (await this.routeCache.exists(baseRoute)) {
+            return await this.getPage(await this.routeCache.get(baseRoute));
         }
 
         const pagePath = await this.findRoute(baseRoute);
         if (pagePath) {
-            this.cache.set(baseRoute, pagePath);
-            return await this.readPage(pagePath);
+            this.routeCache.set(baseRoute, pagePath);
+            return await this.getPage(pagePath);
         }
-        
-        route = baseRoute;
         
         return undefined;
     }

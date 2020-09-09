@@ -21,7 +21,12 @@ export default async (ctx: Context, next: any) => {
                 ? Marked.parse(page.content ?? '').content
                 : await theme.engine.render(page.content ?? '', {});
 
-            ctx.response.body = await theme.engine.render(page.style, { site: SITE_CONFIG, page, content, route: ctx.request.url.pathname });
+            ctx.response.body = await theme.engine.render(page.style, { 
+                site: SITE_CONFIG, 
+                page, 
+                content, 
+                route: ctx.request.url.pathname 
+            });
             ctx.response.headers.set('Content-Type', 'text/html');
             ctx.response.status = 200;
 

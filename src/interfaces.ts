@@ -40,6 +40,11 @@ export interface Page {
     published?: Date;
 }
 
+export interface PageEntry {
+    route: string;
+    page: Page;
+}
+
 export interface NavItem {
     name: string;
     link?: string;
@@ -48,7 +53,9 @@ export interface NavItem {
 
 export interface PageStore {
     get: (route: string) => Promise<Page | undefined>;
+    getAll: () => Promise<PageEntry[]>;
     save: (route: string, page: Page) => Promise<void>;
+    delete: (route: string) => Promise<void>;
 }
 //#endregion
 

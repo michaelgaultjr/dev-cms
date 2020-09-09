@@ -40,6 +40,8 @@ content: |
     This is my website content
 ```
 
+You can use any other storage format by creating an implementation of the `PageStore` interface and setting an instance of it to `pageStore` in the `app.state` record.
+
 ### Plugins
 
 Plugins can be created by creating a folder in `plugins` with a `plugin.json`, and `plugin.ts` file, example:
@@ -71,7 +73,7 @@ Check out the `admin-panel` plugin for an example of what you can do with plugin
 
 Themes are not fully implemented, only an idea for the file structure is in place.
 
-See the `Roadmap` section below for more information.
+See the `Upcoming Features` section below for more information.
 
 
 ### View Engines
@@ -98,10 +100,12 @@ export default class BasicDenjucksEngine implements ViewEngine {
 
 ## Upcoming Features
 
-- Navbar Config
+- Admin Plugin Security
 - (Improved) Site Settings
 - More Tests
 - Media Library (A plugin that's page independant for user uploaded content)
+
+## Ideas for Upcoming Features
 - Theme Layouts (Load any file in the theme folder named `[name].layout.[extention]` as a possible layout)
 
 ---

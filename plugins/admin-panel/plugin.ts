@@ -1,14 +1,14 @@
 import {
     RouterContext,
 
-    Pages,
     Page,
 
     ViewRouter,
     View
 } from '../../src/api.ts';
 
-import { v4 } from "https://deno.land/std/uuid/mod.ts";
+import { PageEntry } from "../../src/interfaces.ts";
+import { getQuery } from "https://deno.land/x/oak@v6.0.2/helpers.ts";
 
 // export function configureApplication(app: Application, config: PluginConfig) {
 //     // Example Hello, Goodbye Middleware
@@ -26,17 +26,26 @@ export async function configureRouter(router: ViewRouter) {
         .get('/pages', async (ctx: RouterContext) => {
             const query = ctx.request.url.searchParams.get('query');
 
-            const pages: Page[] = query // Fix: ILIKE is PGSQL only, should be changed to work with other databases
-                ? await Pages.select('id', 'title', 'route').where('title', 'ilike', `%${query}%`).orderBy('route').all()
-                : await Pages.select('id', 'title', 'route').orderBy('route').all();
+            let pageEntries = await ctx.app.state['pageStore'].getAll() as PageEntry[];
 
-            await View(ctx, 'pages', { pages, query })
+            if (query) {
+                pageEntries = pageEntries.filter(entry => entry.page.title.toLowerCase().includes(query.toLowerCase()));
+            }
+ 
+            await View(ctx, 'pages', { pageEntries, query })
         })
-        .get('/pages/edit/:id', async (ctx: RouterContext) => {
-            const id = ctx.params.id;
-            const page: Page = await Pages.where('id', id).first();
+        .get('/pages/edit', async (ctx: RouterContext) => {
+            const params = getQuery(ctx);
+            const route = params.route;
 
-            if (!id) {
+            if (!route) {
+                ctx.response.status = 404;
+                return;
+            }
+
+            const page: Page = await ctx.app.state['pageStore'].get(route);
+
+            if (!page) {
                 ctx.response.status = 404;
                 return;
             }
@@ -50,54 +59,48 @@ export async function configureRouter(router: ViewRouter) {
 
     router
         .post('/pages', async (ctx: RouterContext) => {
-            const body = await ctx.request.body();
+            const body = ctx.request.body({ type: 'form-data'});
             const { fields } = await body.value.read();
 
-            let id = v4.generate();
-
-            while (await Pages.where('id', id).count() > 0) {
-                id = v4.generate();
-            }
-
-            await Pages.create({
-                id,
-                ...fields,
+            await ctx.app.state['pageStore'].save(fields.route, {
+                title: fields.title,
                 style: 'default',
                 type: 'markdown'
-            });
+            })
 
-            ctx.response.redirect(ctx.request.url.pathname);
+            ctx.response.redirect(ctx.request.url.toString());
         })
-        .post('/pages/edit/:route', async (ctx: RouterContext) => {
-            const route = ctx.params.route;
+        .post('/pages/edit', async (ctx: RouterContext) => {
+            const params = getQuery(ctx);
+            const route = params.route;
 
             if (!route) {
                 ctx.response.status = 404;
                 return;
             }
 
-            const body = await ctx.request.body();
+            const body = ctx.request.body({ type: 'form-data'});
             const { fields } = await body.value.read();
 
-            //Pages.where('id', id).update(fields);
-            ctx.app.state['pageStore'].save(route, {
+            await ctx.app.state['pageStore'].save(route, {
                 // Defaults can be set before importing the fields
                 ...fields,
             })
 
-            ctx.response.redirect(ctx.request.url.pathname);
+            ctx.response.redirect(ctx.request.url.toString());
         });
 
     router
-        .get('/pages/delete/:id', async (ctx: RouterContext) => {
-            const id = ctx.params.id;
+        .get('/pages/delete', async (ctx: RouterContext) => {
+            const params = getQuery(ctx);
+            const route = params.route;
 
-            if (!id) {
+            if (!route) {
                 ctx.response.status = 404;
                 return;
             }
 
-            await Pages.where('id', id).delete();
+            await ctx.app.state['pageStore'].delete(route);
 
             ctx.response.redirect('/admin/pages');
         });

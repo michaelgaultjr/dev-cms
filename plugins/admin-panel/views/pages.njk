@@ -19,8 +19,8 @@
         </div>
     <hr>
 
-    {% for page in pages %}
-        {{ pageItem(page.title, page.route, page.id) }}
+    {% for entry in pageEntries %}
+        {{ pageItem(entry.page.title, entry.route) }}
     {% endfor %}
 
     <div id="addModal" class="modal">
@@ -74,7 +74,7 @@
     </script>
 {% endblock main %}
 
-{% macro pageItem(title, route, id) %}
+{% macro pageItem(title, route) %}
     <div class="card" style="margin-bottom: 1.5rem">
         <div class="card-content">
             <p class="title">
@@ -87,12 +87,12 @@
         <footer class="card-footer">
             <p class="card-footer-item">
                 <span>
-                    <a href="/admin/pages/edit/{{ id }}">Edit</a>
+                    <a href="/admin/pages/edit?route={{ route }}">Edit</a>
                 </span>
             </p>
             <p class="card-footer-item">
                 <span>
-                    <a href="/admin/pages/delete/{{ id }}">Delete</a>
+                    <a href="/admin/pages/delete?route={{ route }}">Delete</a>
                 </span>
             </p>
         </footer>

@@ -1,6 +1,8 @@
 title: About
-type: markdown
 style: default
-content: |
-    # Michael
-    This is a useless about page except for the part where it tells you about how this page is usless
+type: markdown
+content: >
+  # Michael
+
+  This is a useless about page except for the part where it tells you about how
+  this page is usless!

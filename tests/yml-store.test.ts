@@ -8,7 +8,7 @@ Deno.test({
     name: "Yaml File Store - Index Search",
     async fn() {
         const expected = 'tests\\pages\\index.yml';
-        const route = await fileStore.findRoute('tests\\pages');
+        const route = await fileStore.findPath('tests\\pages');
 
         assert(route == expected, `Route was ${route}. Expected ${expected}.`);
     } 
@@ -18,7 +18,7 @@ Deno.test({
     name: "Yaml File Store - Folder Search",
     async fn() {
         const expected = 'tests\\pages\\sub\\about.yaml';
-        const route = await fileStore.findRoute('tests\\pages\\sub\\about');
+        const route = await fileStore.findPath('tests\\pages\\sub\\about');
 
         assert(route == expected, `Route was ${route}. Expected ${expected}.`);
         assert
@@ -34,7 +34,7 @@ Deno.test({
             type: 'markdown',
             content: 'Test Content',
         }
-        const content = await fileStore.readPage('tests\\pages\\index.yml')
+        const content = await fileStore.getPage('tests\\pages\\index.yml')
 
         assert(JSON.stringify(content) == JSON.stringify(expected), `Content was '${JSON.stringify(content)}'. Expected ${JSON.stringify(expected)}`)
     }

@@ -1,6 +1,5 @@
 {
     "name": "Admin Panel",
     "version": "1.0.0",
-    "base": "/admin",
-    "enabled": false
+    "base": "/admin"
 }

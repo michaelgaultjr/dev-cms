@@ -17,7 +17,7 @@
         "desc": "Run dev-cms in development mode",
         "watch": true,
         "unstable": true,
-        "allow": [ "net", "read", "env" ],
+        "allow": [ "net", "read", "env", "write" ],
         "env" :{
           "CACHE-DURATION": "30",
           "PORT": "3000"

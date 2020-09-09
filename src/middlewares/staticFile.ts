@@ -4,7 +4,7 @@ import {
     path
 } from '../deps.ts';
 
-const ALLOWED_TYPES = new Set<string>((Deno.env.get('ALLOWED-EXTENTSIONS') ?? '.css,.js,.png,.svg').trim().split(','));
+const ALLOWED_TYPES = new Set<string>((Deno.env.get('ALLOWED-EXTENTSIONS') ?? '.css,.js,.png,.svg,.otf,.ttf,.woff').trim().split(','));
 const CACHE_DURATION = Deno.env.get('CACHE-DURATION') ?? '1800'; // The time (in seconds) to set the max-age property in the Cache-Control header
 
 // Very basic static file middleware, needs to be upgraded and secured

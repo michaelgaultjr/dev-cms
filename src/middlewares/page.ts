@@ -1,6 +1,6 @@
 import {
     Context, 
-    fs,
+    readJson
 } from '../deps.ts';
 
 import {
@@ -9,7 +9,7 @@ import {
 
 import { Marked } from 'https://deno.land/x/markdown@v2.0.0/mod.ts';
 
-const SITE_CONFIG = await fs.readJson(`${Deno.cwd()}/site.json`);
+const SITE_CONFIG = await readJson(`${Deno.cwd()}/site.json`);
 
 export default async (ctx: Context, next: any) => {
     const page: Page = await ctx.app.state['pageStore'].get(ctx.request.url.pathname);

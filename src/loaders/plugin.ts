@@ -8,6 +8,7 @@ import {
     cyan,
     green,
     red,
+    readJson
 } from "../deps.ts";
 import DenjucksViewEngine from "../view-engines/denjucks-engine.ts";
 
@@ -25,7 +26,7 @@ export async function loadPlugins(app: Application): Promise<void> {
         if (pluginDirectory.isDirectory && await fs.exists(`${pluginsRoot}/${pluginDirectory.name}/${PLUGIN_CONFIG}`)) {
             const pluginRoot = `${pluginsRoot}/${pluginDirectory.name}`;
 
-            const pluginConfig = await fs.readJson(`${pluginRoot}/${PLUGIN_CONFIG}`) as PluginConfig;
+            const pluginConfig = await readJson(`${pluginRoot}/${PLUGIN_CONFIG}`) as PluginConfig;
             if ((pluginConfig.enabled ?? true) == false) {
                 console.log(`${cyan(`[${pluginConfig.name}]`)} ${red('Plugin Disabled. Skipping.')}`);
                 continue;

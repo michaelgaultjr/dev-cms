@@ -1,4 +1,4 @@
-export { 
+export type { 
     PluginConfig,
 
     ViewEngine,
@@ -8,12 +8,13 @@ export {
     PageStore
 } from "./interfaces.ts";
 
-export { 
-    Application, 
-    Context,
+export { Application } from "./deps.ts";
 
+export type { 
+    Context,
     RouterContext,
 } from "./deps.ts";
+
 
 export {
     ViewRouter, 

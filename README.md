@@ -22,7 +22,7 @@ dev-cms can be configured using enviroment variables. You can set them in `denon
 
 - `PORT={number}` - Sets the port of the Application. Default `3000`.
 - `CACHE-DURATION={number}` Sets the `max-age` property in the `Cache-Control` header for static files. Default `1800`.
-- `ALLOWED-EXTENTSIONS={extentions}` Comma separated list of allowed extentions. Default `.css,.js,.png,.svg`.
+- `ALLOWED-EXTENTSIONS={extentions}` Comma separated list of allowed extentions. Default `'.css,.js,.png,.svg,.otf,.ttf,.woff'`.
 
 ### Creating Pages
 

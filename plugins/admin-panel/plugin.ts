@@ -8,7 +8,7 @@ import {
 } from '../../src/api.ts';
 
 import { PageEntry } from "../../src/interfaces.ts";
-import { getQuery } from "https://deno.land/x/oak@v6.0.2/helpers.ts";
+import { getQuery } from "https://deno.land/x/oak@v6.3.2/helpers.ts";
 
 // export function configureApplication(app: Application, config: PluginConfig) {
 //     // Example Hello, Goodbye Middleware
